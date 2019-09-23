@@ -46,6 +46,29 @@ describe('scope', function () {
     )
 
     assert.strictEqual(
+      c.getBody(
+        `const Wrapper = () => <div></div>;
+const Message = ({ title, message, error }) => {
+  return <Wrapper>
+    <div>
+      <h1 elem="title">{ title }</h1>
+      <div elem="msg" mods={{ error }}>{ message }</div>
+    </div>
+  </Wrapper>;
+};`
+      ),
+      `const Wrapper = () => <div className="wrapper"></div>;
+const Message = ({ title, message, error }) => {
+  return <Wrapper>
+    <div className="message">
+      <h1 className="message__title">{title}</h1>
+      <div className={_abem("message", "msg", { error })}>{message}</div>
+    </div>
+  </Wrapper>;
+};`
+    )
+
+    assert.strictEqual(
       c.getCode(
         `const Time = ({ time }) => {
   return <div>

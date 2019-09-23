@@ -43,7 +43,8 @@ The plugin will try to resolve the className during the compilation (`className=
 
 ### Scopes
 
-The `block` property creates a scope and should only be used at the top-level of the JSX tag. It will be automatically generated if it's inside a class or a named function (if the class/function name is prefixed by a A, O or M, then it'll add the prefix 'a-', 'o-', or 'm-')
+The `block` property creates a scope and should only be used at the top-level of the JSX tag. It will be automatically generated if it's inside a class or an arrow function (if the class/function name is prefixed by a A, O or M, then it'll add the prefix 'a-', 'o-', or 'm-')
+
 
 ### Examples
 
@@ -64,10 +65,10 @@ The `block` property creates a scope and should only be used at the top-level of
 
 **Input**
 ```js
-const Message = ({ title, text}) => {
+const Message = ({ title, text }) => {
   return <div>
-    <div elem="header">{ title }</div>
-    <div elem="body">{ text }</div>
+    <div elem="header">{title }</div>
+    <div elem="body">{text}</div>
   </div>
 }
 ```
@@ -88,8 +89,8 @@ class OMessage extends Component {
   render() {
     ...
     return <div mods={this.getMods()}>
-      <div elem="header">{ title }</div>
-      <div elem="body">{ text }</div>
+      <div elem="header">{title}</div>
+      <div elem="body">{text}</div>
     </div>
   }
 }
@@ -107,6 +108,30 @@ class OMessage extends Component {
   }
 }
 ```
+
+**Input**
+```js
+const OEmailMessage = ({ title, html }) => {
+  return <Wrapper>
+    <div mods={{ disabled: true }}>
+      <div elem="header">{title}</div>
+      <div elem="bodyHtml">{html}</div>
+    </div>
+  </Wrapper>
+}
+```
+**Output**
+```js
+const OEmailMessage = ({ title, html }) => {
+  return <Wrapper>
+    <div className="o-emailMessage -disabled">
+      <div className="o-emailMessage__header">{title}</div>
+      <div className="o-emailMessage__bodyHtml">{html}</div>
+    </div>
+  </Wrapper>
+}
+```
+
 
 ## Options
 
@@ -131,6 +156,42 @@ separators: {
   modifier: '-',
 }
 ```
+
+## Limitations
+
+Passing options with spread operator won't work as expected.
+In this example, `html` modifier won't be added.
+
+```js
+const OMessage = ({ title, text, ...props }) => {
+  return <div {...props}>
+    <div elem="header">{title}</div>
+    <div elem="body">{text}</div>
+  </div>
+}
+
+[...]
+
+const html = true
+<OMessage title="Hello" text="World" mods={{ html }} />
+```
+
+ABEM propetrties shouldn't be passed this way anyway. Instead, you should do:
+
+```js
+const OMessage = ({ title, text, html }) => {
+  return <div mods={{ html }}>
+    <div elem="header">{title}</div>
+    <div elem="body">{text}</div>
+  </div>
+}
+
+[...]
+
+const html = true
+<OMessage title="Hello" text="World" html={html} />
+```
+
 
 ## Send some love
 

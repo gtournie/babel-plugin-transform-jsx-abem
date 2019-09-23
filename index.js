@@ -165,7 +165,10 @@ module.exports = function (base) {
 
   const JSXRootElementVisitor = {
     JSXElement (path) {
-      if (t.isJSXElement(path.parent)) return
+      const elementName = path.node.openingElement.name.name
+
+      // Wrapper
+      if (elementName.charAt(0).toUpperCase() === elementName.charAt(0)) return
 
       const properties = this.properties
       const attributes = readAttributes(path, properties)
@@ -190,6 +193,7 @@ module.exports = function (base) {
 
       mutateAttributes(path, attributes, abemFunc, _abem, use)
       path.traverse(JSXChildElementVisitor, { abemFunc, properties, block: attrs[0], _abem, use })
+      path.stop()
     }
   }
 
