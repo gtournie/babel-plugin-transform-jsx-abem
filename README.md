@@ -43,7 +43,7 @@ The plugin will try to resolve the className during the compilation (`className=
 
 ### Scopes
 
-The `block` property creates a scope and should only be used at the top-level of the JSX tag. It will be automatically generated if it's inside a class or an arrow function (if the class/function name is prefixed by a A, O or M, then it'll add the prefix 'a-', 'o-', or 'm-')
+The `block` property creates a scope and should only be used at the top-level of the JSX tag. It will be automatically generated if it's inside a class or a function (if the class/function name is prefixed by a A, O or M, then it'll add the prefix 'a-', 'o-', or 'm-')
 
 
 ### Examples
@@ -111,7 +111,7 @@ class OMessage extends Component {
 
 **Input**
 ```js
-const OEmailMessage = ({ title, html }) => {
+function OEmailMessage ({ title, html }) {
   return <Wrapper>
     <div mods={{ disabled: true }}>
       <div elem="header">{title}</div>
@@ -122,7 +122,7 @@ const OEmailMessage = ({ title, html }) => {
 ```
 **Output**
 ```js
-const OEmailMessage = ({ title, html }) => {
+function OEmailMessage ({ title, html }) {
   return <Wrapper>
     <div className="o-emailMessage -disabled">
       <div className="o-emailMessage__header">{title}</div>

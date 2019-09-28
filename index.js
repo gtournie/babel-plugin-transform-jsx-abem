@@ -71,7 +71,9 @@ module.exports = function (base) {
 
   const getScopeName = scope => {
     let name
-    if (
+    if (scope.block && scope.block.type === 'FunctionDeclaration') {
+      name = scope.block.id.name
+    } else if (
       scope.block &&
       scope.block.type === 'ArrowFunctionExpression' &&
       scope.parentBlock &&
